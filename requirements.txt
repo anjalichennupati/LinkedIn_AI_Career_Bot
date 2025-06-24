@@ -1,0 +1,6 @@
+streamlit
+openai
+langchain
+apify-client
+scikit-learn
+python-dotenv
