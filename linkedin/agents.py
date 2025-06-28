@@ -11,7 +11,6 @@ from typing import TypedDict, Annotated
 from langchain_core.runnables import RunnableLambda
 
 
-# ✅ 1. Imports and Gemini Setup
 import requests
 from bs4 import BeautifulSoup
 import io
@@ -28,10 +27,8 @@ from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
 from typing import TypedDict, Annotated
 
-# 👇 Keep your reducer
 def replace(_, b): return b
 
-# ✅ Update the LangGraph state definition
 class ProfileState(TypedDict):
     profile: Annotated[dict, replace]
     analysis: Annotated[str, replace]
@@ -39,16 +36,15 @@ class ProfileState(TypedDict):
     job_matches: Annotated[list, replace]
     job_fit_result: Annotated[str, replace]
     enhanced_content: Annotated[str, replace]
-    career_guide_response: Annotated[str, replace]  # ✅ NEW
+    career_guide_response: Annotated[str, replace]  
 
 
 
-# # ✅ 2. Upload PDF and Parse Sections
 # def upload_pdf():
 #     print("📤 Upload your LinkedIn PDF")
 #     uploaded = files.upload()
 #     for fname in uploaded.keys():
-#         print(f"\n✅ Uploaded: {fname}")
+#         print(f"\nUploaded: {fname}")
 #         return io.BytesIO(uploaded[fname])
 #     return None
 
@@ -130,7 +126,7 @@ Return your output section-wise in a clear, structured format.
     response = model.generate_content(prompt)
     return {"profile": profile, "analysis": response.text}
 
-# Wrap it as a Runnable
+# Runnable
 profile_analysis_node = RunnableLambda(profile_analysis_agent)
 
 
@@ -158,7 +154,6 @@ def search_remoteok_jobs(job_title, limit=15):
             link = 'https://remoteok.com' + tr['data-href']
             description = f"{title} at {company} in {location} — Posted on {date_posted}. More at: {link}"
 
-            # Matching Logic
             title_lower = title.lower()
             job_title_lower = job_title.lower()
 
@@ -365,18 +360,18 @@ career_guide_node = RunnableLambda(career_guide_agent)
 
 
 
-# ✅ Create the graph
+# graph
 memory = MemorySaver()
 builder = StateGraph(ProfileState)
 
-# Add all three nodes
+# three nodes
 builder.add_node("profile_analysis", profile_analysis_node)
 builder.add_node("job_fit", job_fit_node)
 builder.add_node("content_enhancement", content_enhancement_node)
 builder.add_node("career_guide", RunnableLambda(career_guide_agent))
 
 
-# Define flow
+#  flow
 builder.set_entry_point("profile_analysis")
 builder.add_edge("profile_analysis", "job_fit")
 builder.add_edge("job_fit", "content_enhancement")
