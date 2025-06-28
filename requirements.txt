@@ -1,6 +1,22 @@
-streamlit
-openai
-langchain
-apify-client
-scikit-learn
-python-dotenv
+# Core AI + Multi-agent system
+langgraph==0.0.32
+langchain==0.1.20
+
+# Gemini API
+google-generativeai==0.4.1
+
+# Frontend (Web UI)
+streamlit==1.35.0
+
+# PDF handling
+PyPDF2==3.0.1
+
+# Web scraping
+beautifulsoup4==4.12.3
+requests==2.32.3
+
+# Optional (for advanced memory & serialization)
+orjson==3.10.1
+
+# Typing support (optional but useful for VSCode autocomplete)
+typing-extensions>=4.0.1
