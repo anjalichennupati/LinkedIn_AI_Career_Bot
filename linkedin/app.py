@@ -1,7 +1,6 @@
 import streamlit as st
 from PyPDF2 import PdfReader
 
-# ✅ Import agents/nodes
 from agents import (
     profile_analysis_node,
     job_fit_node,
@@ -9,16 +8,13 @@ from agents import (
     career_guide_node
 )
 
-# ✅ App settings
 st.set_page_config(page_title="LinkedIn Career Coach", layout="wide")
 st.title("🤖 LinkedIn Career Coach Assistant")
 
-# ✅ Inputs
 uploaded_file = st.file_uploader("📤 Upload your LinkedIn Profile PDF", type=["pdf"])
 job_title = st.text_input("🎯 Target Job Title")
 user_question = st.text_area("💬 Ask a Career Question (for Career Guide tab)")
 
-# ✅ Profile extractor
 def extract_profile_sections_from_pdf(uploaded_file):
     reader = PdfReader(uploaded_file)
     full_text = ""
@@ -43,7 +39,6 @@ def extract_profile_sections_from_pdf(uploaded_file):
                 sections[current_section] += line_clean + " "
     return sections
 
-# ✅ When PDF is uploaded
 if uploaded_file:
     profile = extract_profile_sections_from_pdf(uploaded_file)
     st.success("✅ Profile uploaded and parsed!")
