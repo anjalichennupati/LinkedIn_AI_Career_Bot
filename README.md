@@ -98,6 +98,12 @@ Built using **Google Gemini**, **LangGraph**, and **Streamlit**, this system sim
 
 > All agents share state via LangGraph’s state manager and memory system (`MemorySaver`) for full context awareness across the pipeline.
 
+
+<p align="center">
+  <img src="https://i.postimg.cc/pLDYXr3P/dee.png" alt="App Screenshot" width="600">
+</p>  
+
+
 ---
 
 ## 🛠 Tech Stack
