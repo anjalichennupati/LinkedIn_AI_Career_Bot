@@ -70,16 +70,15 @@ Demo Video link: https://drive.google.com/file/d/1blflFWqw3E-9eAdoSDwz3DyXWb72Co
 
 ## 🧱 System Architecture
 
-
 <p align="center">
-  <img src="[https://i.postimg.cc/pLDYXr3P/dee.png](https://i.postimg.cc/7Y8bj6jb/Whats-App-Image-2025-06-30-at-15-32-08-871731c6.jpg)" alt="App Screenshot" width="400">
-</p> 
+  <img src="https://i.postimg.cc/7Y8bj6jb/Whats-App-Image-2025-06-30-at-15-32-08-871731c6.jpg" alt="App Screenshot" width="400">
+</p>
 
 > All agents share state via LangGraph’s state manager and memory system (`MemorySaver`) for full context awareness across the pipeline.
 
 
 <p align="center">
-  <img src="https://i.postimg.cc/pLDYXr3P/dee.png" alt="App Screenshot" width="600">
+  <img src="https://i.postimg.cc/pLDYXr3P/dee.png" alt="App Screenshot" width="1500">
 </p>  
 
 
