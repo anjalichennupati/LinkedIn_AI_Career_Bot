@@ -17,7 +17,7 @@ from bs4 import BeautifulSoup
 import io
 from PyPDF2 import PdfReader
 # from google.colab import files
-from IPython.display import display
+# from IPython.display import display
 
 genai.configure(api_key="AIzaSyDX9htz1H9osUdf-RTN-z4DfiMLnbSUPkQ")
 model = genai.GenerativeModel(model_name="models/gemini-1.5-flash")
