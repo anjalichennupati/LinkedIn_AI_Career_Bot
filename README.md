@@ -12,10 +12,11 @@
 * Evaluating their readiness for specific job roles,
 * Enhancing content alignment with job descriptions,
 * And offering strategic, personalized career mentorship.
+* Demo Video link: https://drive.google.com/file/d/1blflFWqw3E-9eAdoSDwz3DyXWb72CoUR/view?usp=sharing
+* Website Link: https://linkedinaicareerbot-vgx9ib4m9zgdemctuufbke.streamlit.app/
 
 Built using **Google Gemini**, **LangGraph**, and **Streamlit**, this system simulates an AI career coach that can deeply understand your professional background and offer dynamic, contextual recommendations based on real job listings.
 
-Demo Video link: https://drive.google.com/file/d/1blflFWqw3E-9eAdoSDwz3DyXWb72CoUR/view?usp=sharing
 ---
 
 ## 🧠 Features & Agent Functions
