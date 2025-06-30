@@ -15,6 +15,7 @@
 
 Built using **Google Gemini**, **LangGraph**, and **Streamlit**, this system simulates an AI career coach that can deeply understand your professional background and offer dynamic, contextual recommendations based on real job listings.
 
+Demo Video link: https://drive.google.com/file/d/1blflFWqw3E-9eAdoSDwz3DyXWb72CoUR/view?usp=sharing
 ---
 
 ## 🧠 Features & Agent Functions
