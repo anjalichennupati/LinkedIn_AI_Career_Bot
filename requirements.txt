@@ -15,8 +15,5 @@ PyPDF2==3.0.1
 beautifulsoup4==4.12.3
 requests==2.32.3
 
-# Optional (for serialization/memory)
-orjson==3.10.1
-
-# Typing (helps linting & autocomplete)
+# Typing support (optional)
 typing-extensions>=4.0.1
