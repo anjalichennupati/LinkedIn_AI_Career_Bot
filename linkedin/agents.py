@@ -6,10 +6,16 @@ from langgraph.graph import StateGraph, END
 from langgraph.checkpoint.memory import MemorySaver
 from langchain_core.runnables import RunnableLambda
 
-genai.configure(api_key="AIzaSyDX9htz1H9osUdf-RTN-z4DfiMLnbSUPkQ")
+import os
+from dotenv import load_dotenv
+
+load_dotenv() 
+
+
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 model = genai.GenerativeModel(model_name="models/gemini-1.5-flash")
 
-# DataState
+# datastae
 class ProfileState(TypedDict):
     profile: Annotated[dict, lambda _, x: x]
     job_description: Annotated[str, lambda _, x: x]
@@ -102,7 +108,7 @@ Respond helpfully, practically, and in a personalized tone.
 def route(state: ProfileState):
     return "qa"
 
-# LangGraph
+# LG
 memory = MemorySaver()
 builder = StateGraph(ProfileState)
 
