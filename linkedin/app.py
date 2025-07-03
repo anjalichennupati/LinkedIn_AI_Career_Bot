@@ -4,6 +4,11 @@ import streamlit as st
 from agents import graph, memory
 from scraper_utils import scrape_and_clean_profile
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv() 
+
 st.set_page_config(page_title="AI Career Chat Assistant", layout="wide")
 st.title("💼 Chat-based AI Career Assistant")
 
@@ -16,7 +21,6 @@ if "profile_data" not in st.session_state:
 if "thread_id" not in st.session_state:
     st.session_state.thread_id = "career-session"
 
-# 🔗 LinkedIn URL scraping
 linkedin_url = st.text_input("🔗 Enter LinkedIn Profile URL")
 
 if st.button("🔍 Scrape LinkedIn"):
@@ -27,7 +31,7 @@ if st.button("🔍 Scrape LinkedIn"):
             try:
                 scraped = scrape_and_clean_profile(
                     linkedin_url, 
-                    api_token="apify_api_NJqoyhM7gWncNIfbybN9cYpxFdytTL168jGG"
+                    api_token=os.getenv("APIFY_API_KEY")
                 )
                 if not scraped:
                     st.error("❌ Scraping failed or profile was private.")
@@ -37,7 +41,6 @@ if st.button("🔍 Scrape LinkedIn"):
             except Exception as e:
                 st.error(f"Scraping error: {e}")
 
-# ✍️ Inputs
 job_description = st.text_area("📝 Paste the job description (optional)")
 user_question = st.text_input("💬 Ask your AI Career Guide anything")
 
