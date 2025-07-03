@@ -66,6 +66,12 @@ The system is composed of the following layers:
 * Session state is used to preserve the chat thread and profile data.
 
 ---
+## Block Diagram
+<p align="center">
+  <img src="https://i.postimg.cc/HWcFLpLZ/xoxo.png" alt="App Screenshot" width="600">
+</p>  
+
+---
 
 ## Tech Stack
 
