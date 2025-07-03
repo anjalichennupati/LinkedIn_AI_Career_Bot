@@ -17,3 +17,6 @@ requests==2.32.3
 
 # Typing support (optional)
 typing-extensions>=4.0.1
+
+
+requests
