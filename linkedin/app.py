@@ -1,8 +1,8 @@
 # app.py
 
 import streamlit as st
-from PyPDF2 import PdfReader
 from agents import graph, memory
+from scraper_utils import scrape_and_clean_profile
 
 st.set_page_config(page_title="AI Career Chat Assistant", layout="wide")
 st.title("💼 Chat-based AI Career Assistant")
@@ -16,45 +16,34 @@ if "profile_data" not in st.session_state:
 if "thread_id" not in st.session_state:
     st.session_state.thread_id = "career-session"
 
-uploaded_file = st.file_uploader("📤 Upload your LinkedIn Profile (PDF)", type=["pdf"])
+# 🔗 LinkedIn URL scraping
+linkedin_url = st.text_input("🔗 Enter LinkedIn Profile URL")
 
-def extract_profile_sections(pdf_file):
-    reader = PdfReader(pdf_file)
-    full_text = ""
-    for page in reader.pages:
-        full_text += page.extract_text() + "\n"
+if st.button("🔍 Scrape LinkedIn"):
+    if not linkedin_url:
+        st.warning("Please enter a LinkedIn profile URL.")
+    else:
+        with st.spinner("Scraping LinkedIn..."):
+            try:
+                scraped = scrape_and_clean_profile(
+                    linkedin_url, 
+                    api_token="apify_api_NJqoyhM7gWncNIfbybN9cYpxFdytTL168jGG"
+                )
+                if not scraped:
+                    st.error("❌ Scraping failed or profile was private.")
+                else:
+                    st.session_state.profile_data = scraped
+                    st.success("✅ LinkedIn profile scraped and parsed!")
+            except Exception as e:
+                st.error(f"Scraping error: {e}")
 
-    sections = {
-        "about": "", "experience": "", "skills": "",
-        "education": "", "projects": "", "certifications": "",
-        "publications": "", "volunteering": "", "awards": "",
-        "languages": "", "courses": ""
-    }
-
-    current_section = None
-    for line in full_text.splitlines():
-        line_clean = line.strip()
-        line_lower = line_clean.lower()
-        for section in sections.keys():
-            if section in line_lower:
-                current_section = section
-                break
-        else:
-            if current_section:
-                sections[current_section] += line_clean + " "
-
-    return sections
-
-if uploaded_file:
-    st.session_state.profile_data = extract_profile_sections(uploaded_file)
-    st.success("✅ Profile parsed successfully!")
-
+# ✍️ Inputs
 job_description = st.text_area("📝 Paste the job description (optional)")
 user_question = st.text_input("💬 Ask your AI Career Guide anything")
 
 if st.button("🚀 Ask AI"):
     if not st.session_state.profile_data:
-        st.warning("Please upload a LinkedIn profile first.")
+        st.warning("Please scrape a profile first.")
     elif not user_question:
         st.warning("Please enter a question.")
     else:
@@ -71,7 +60,6 @@ if st.button("🚀 Ask AI"):
                         "checkpoint": memory
                     }
                 )
-
                 answer = output.get("answer", "No response.")
                 st.session_state.chat_history.append((user_question, answer))
             except Exception as e:
