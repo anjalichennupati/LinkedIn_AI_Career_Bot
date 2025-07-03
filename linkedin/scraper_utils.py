@@ -2,6 +2,12 @@
 
 from apify_client import ApifyClient
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()  
+
+
 def scrape_and_clean_profile(linkedin_url: str, api_token: str) -> dict:
     client = ApifyClient(api_token)
 
