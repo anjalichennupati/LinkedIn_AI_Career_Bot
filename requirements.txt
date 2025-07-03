@@ -8,15 +8,10 @@ google-generativeai==0.4.1
 # Frontend (Web UI)
 streamlit==1.35.0
 
-# PDF handling
-PyPDF2==3.0.1
-
 # Web scraping
 beautifulsoup4==4.12.3
-requests==2.32.3
+requests
+apify-client
 
 # Typing support (optional)
 typing-extensions>=4.0.1
-
-
-requests
