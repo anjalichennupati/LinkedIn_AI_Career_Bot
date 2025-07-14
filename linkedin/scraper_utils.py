@@ -11,7 +11,7 @@ load_dotenv()
 def scrape_and_clean_profile(linkedin_url: str, api_token: str) -> dict:
     client = ApifyClient(api_token)
 
-    run_input = { "queries": [linkedin_url] }
+    run_input = {"queries": [linkedin_url]}
     run = client.actor("harvestapi~linkedin-profile-scraper").call(run_input=run_input)
 
     raw = None
@@ -44,6 +44,10 @@ def scrape_and_clean_profile(linkedin_url: str, api_token: str) -> dict:
         "publications": "\n".join(
             f"{pub['title']} - {pub.get('description', '')}"
             for pub in raw.get("publications", [])
+        ),
+        "projects": "\n".join(
+            f"{proj['title']} - {proj.get('description', '')}"
+            for proj in raw.get("projects", [])
         ),
     }
     return clean_data
