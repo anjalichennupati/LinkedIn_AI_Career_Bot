@@ -1,8 +1,8 @@
 # Core AI + Multi-agent system
-langgraph==0.0.32
-langchain==0.1.20
+langgraph>=0.0.36
+langchain>=0.1.20
 
-# Gemini API
+# Gemini API (Google Generative AI SDK)
 google-generativeai==0.4.1
 
 # Frontend (Web UI)
@@ -10,10 +10,11 @@ streamlit==1.35.0
 
 # Web scraping
 beautifulsoup4==4.12.3
-requests
-apify-client
+requests==2.31.0
+apify-client==1.4.0
 
-# Typing support (optional)
-typing-extensions>=4.0.1
-
+# Env variables
 python-dotenv==1.0.1
+
+# Typing support and runtime compatibility
+typing-extensions>=4.0.1
