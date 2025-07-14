@@ -1,7 +1,7 @@
 
 import streamlit as st
 from langchain_core.messages import HumanMessage, AIMessage
-from agents import graph, memory  
+from agents import graph, memory 
 from scraper_utils import scrape_and_clean_profile
 
 import os
@@ -41,7 +41,9 @@ if st.button("🔍 Scrape LinkedIn"):
                 st.error(f"Scraping error: {e}")
 
 job_description = st.text_area("📝 Paste the job description (optional)", height=200)
-user_question = st.text_input("💬 Ask your AI Career Guide anything")
+user_question = st.text_input(
+    "💬 Ask your AI Career Guide anything (Type quit to stop execution)"
+)
 
 if st.button("🚀 Ask AI"):
     if not st.session_state.profile_data:
@@ -65,7 +67,7 @@ if st.button("🚀 Ask AI"):
                     },
                 )
 
-                
+              
                 ai_messages = [
                     msg
                     for msg in output.get("messages", [])
