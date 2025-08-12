@@ -1,6 +1,7 @@
 # Core AI + Multi-agent system
 langgraph>=0.0.36
 langchain>=0.1.20
+langchain-mongodb>=0.1.4
 
 # Gemini API (Google Generative AI SDK)
 google-generativeai==0.4.1
@@ -18,3 +19,6 @@ python-dotenv==1.0.1
 
 # Typing support and runtime compatibility
 typing-extensions>=4.0.1
+
+# Persistence
+pymongo>=4.6.0
