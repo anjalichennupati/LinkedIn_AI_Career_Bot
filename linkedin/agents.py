@@ -6,7 +6,31 @@ from typing import TypedDict, Annotated, Optional
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage
 from langgraph.graph import StateGraph, END
 from langgraph.types import Command, interrupt
-from langgraph.checkpoint.memory import MemorySaver
+# Try to use MongoDB persistence, fallback to memory if not available
+try:
+    from langgraph.checkpoint.mongodb import MongoDBSaver
+    import os
+    from dotenv import load_dotenv
+    
+    load_dotenv()
+    mongodb_uri = os.getenv("MONGODB_URI", "mongodb://localhost:27017")
+    db_name = os.getenv("MONGODB_DB", "career_bot")
+    collection_name = os.getenv("MONGODB_COLLECTION", "sessions")
+    
+    memory = MongoDBSaver(
+        connection_string=mongodb_uri,
+        database_name=db_name,
+        collection_name=collection_name
+    )
+    print("✅ Using MongoDB persistence")
+except ImportError:
+    from langgraph.checkpoint.memory import MemorySaver
+    memory = MemorySaver()
+    print("⚠️ MongoDB not available, using in-memory persistence")
+except Exception as e:
+    from langgraph.checkpoint.memory import MemorySaver
+    memory = MemorySaver()
+    print(f"⚠️ MongoDB connection failed: {e}, using in-memory persistence")
 import google.generativeai as genai
 from scraper_utils import scrape_and_clean_profile
 
@@ -72,6 +96,7 @@ Return one of:
 - analyze_profile
 - job_fit_agent
 - enhance_profile
+- career_plan
 - general_qa
 
 DO NOT GUESS. Use the following rules:
@@ -82,17 +107,17 @@ ROUTE TO: **analyze_profile**
 → If the user wants a LinkedIn/resume/profile review, feedback, strengths, weaknesses, or audit.
 
 Examples:
-- “Can you review my LinkedIn?”
-- “What are my strengths and weaknesses?”
-- “Audit my profile”
+- "Can you review my LinkedIn?"
+- "What are my strengths and weaknesses?"
+- "Audit my profile"
 - Or any other question that implies analyzing the profile.
 ---
 
 ROUTE TO: **job_fit_agent**
 → If the user says anything like:
-- “Does my profile match this JD?”
-- “Am I eligible for this job?”
-- “Score me against this role”
+- "Does my profile match this JD?"
+- "Am I eligible for this job?"
+- "Score me against this role"
 - Or any other question that implies matching the profile to a job description.
 
 *Only* route here if a job description was recently provided.
@@ -103,9 +128,21 @@ ROUTE TO: **enhance_profile**
 → If the user asks for:
 - Rewriting/resume improvement
 - Profile optimization
-- “Improve my About section”
-- “Rewrite my Experience bullets”
+- "Improve my About section"
+- "Rewrite my Experience bullets"
 - Or any other question that implies enhancing the profile.
+
+---
+
+ROUTE TO: **career_plan**
+→ If the user wants a career plan, roadmap, or action plan.
+
+Examples:
+- "Create a career plan for me"
+- "Give me a roadmap to become a data scientist"
+- "I want a 30-60-90 day plan"
+- "Help me plan my career transition"
+- Or any other question that implies creating a structured career plan.
 
 ---
 
@@ -113,10 +150,10 @@ ROUTE TO: **general_qa**
 → All other general career questions.
 
 Examples:
-- “What kind of roles should I target?”
-- “How do I switch fields?”
-- “What are good certifications for data science?”
-- “How do I get into startups?”
+- "What kind of roles should I target?"
+- "How do I switch fields?"
+- "What are good certifications for data science?"
+- "How do I get into startups?"
 - Or any other question that doesn't fit the above categories.
 
 ---
@@ -125,7 +162,7 @@ USER QUESTION:
 {question}
 
 Just respond with ONE of:
-analyze_profile, job_fit_agent, enhance_profile, general_qa
+analyze_profile, job_fit_agent, enhance_profile, career_plan, general_qa
 """
 
     try:
@@ -136,6 +173,7 @@ analyze_profile, job_fit_agent, enhance_profile, general_qa
             "analyze_profile",
             "job_fit_agent",
             "enhance_profile",
+            "career_plan",
             "general_qa",
         }:
             state["messages"] = messages  
@@ -454,6 +492,95 @@ Start now.
     return interrupt("continue_chat")
 
 
+def career_plan_node(state: AgentState) -> dict:
+    profile = state.get("profile_data", {})
+    messages = state["messages"]
+    brief = ""
+    
+    # Check if we're already processing feedback to prevent recursion
+    if state.get("processing_feedback", False):
+        # We're already handling feedback, just return the current state
+        return state
+    
+    for msg in reversed(messages):
+        if isinstance(msg, HumanMessage):
+            brief = msg.content.strip()
+            break
+
+    if not brief:
+        messages.append(AIMessage("⚠️ Please provide a brief for your career plan."))
+        state["messages"] = messages
+        return interrupt("continue_chat")
+
+    # Check if this is a review/feedback message - process directly without routing
+    if any(keyword in brief.lower() for keyword in ["review feedback:", "feedback:", "modify", "change", "revise", "update"]):
+        # Set flag to prevent recursion
+        state["processing_feedback"] = True
+        
+        # Extract the original plan and apply feedback
+        original_plan = ""
+        for msg in reversed(messages):
+            if isinstance(msg, AIMessage) and ("career plan" in msg.content.lower() or "transition plan" in msg.content.lower()):
+                original_plan = msg.content
+                break
+        
+        if original_plan:
+            # Apply user feedback to revise the plan - ONE LLM call only
+            prompt = f"""
+The user wants to revise their career plan. Here's their feedback:
+
+USER FEEDBACK: {brief}
+
+ORIGINAL PLAN:
+{original_plan}
+
+Please revise the plan according to their feedback. If they want different timeline, role, or any other changes, implement them exactly as requested.
+
+IMPORTANT: This is a revision request. You MUST modify the original plan based on the user's feedback.
+""".strip()
+            
+            try:
+                result = model.generate_content(prompt)
+                revised_plan = result.text
+            except Exception as e:
+                revised_plan = f"❌ Error: {e}"
+            
+            messages.append(AIMessage(revised_plan))
+            state["messages"] = messages
+            # Clear the flag and return - NO MORE ROUTING
+            state["processing_feedback"] = False
+            return state  # Done! No interrupt, no routing
+        else:
+            messages.append(AIMessage("⚠️ No original plan found to revise."))
+            state["messages"] = messages
+            state["processing_feedback"] = False
+            return state
+
+    # This is the initial plan generation - ONE LLM call only
+    profile_text = "\n".join(f"{k}: {v}" for k, v in profile.items()) if profile else "(no profile)"
+
+    prompt = f"""
+Create a career plan based on this brief and profile:
+
+BRIEF: {brief}
+PROFILE: {profile_text}
+
+Give a practical 30-60-90 day plan with specific actions.
+""".strip()
+
+    try:
+        result = model.generate_content(prompt)
+        draft = result.text
+    except Exception as e:
+        draft = f"❌ Error: {e}"
+
+    messages.append(AIMessage(draft))
+    state["messages"] = messages
+
+    # Interrupt for human review - user can now provide feedback
+    return interrupt("continue_chat")
+
+
 def build_graph():
     builder = StateGraph(AgentState)
     builder.add_node("career_qa_router", career_qa_router)
@@ -461,6 +588,7 @@ def build_graph():
     builder.add_node("job_fit_agent", job_fit_agent_node)
     builder.add_node("enhance_profile", enhance_profile_node)
     builder.add_node("general_qa_node", general_qa_node)
+    builder.add_node("career_plan", career_plan_node)
     builder.set_entry_point("career_qa_router")
 
     # Loop back from all task nodes to router
@@ -469,13 +597,13 @@ def build_graph():
         "job_fit_agent",
         "enhance_profile",
         "general_qa_node",
+        "career_plan",
     ]:
         builder.add_edge(task, "career_qa_router")
 
     return builder.compile()
 
 
-memory = MemorySaver()
 graph = build_graph()
 
 if __name__ == "__main__":
