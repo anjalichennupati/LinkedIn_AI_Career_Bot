@@ -1,12 +1,10 @@
-from pymongo import MongoClient
-import os
+from fastmcp import FastMCP
 
-# same URI you put in your .env
-uri = os.getenv("MONGODB_URI", "mongodb://localhost:27017")
+mcp = FastMCP("test-service")
 
-try:
-    client = MongoClient(uri, serverSelectionTimeoutMS=2000)
-    client.server_info()  # force connection
-    print("✅ Connected to MongoDB")
-except Exception as e:
-    print("❌ Not connected:", e)
+@mcp.tool()
+def add(a: int, b: int) -> int:
+    return a + b
+
+if __name__ == "__main__":
+    mcp.run()

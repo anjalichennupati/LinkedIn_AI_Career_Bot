@@ -11,6 +11,10 @@ import os
 from pymongo import MongoClient
 import traceback
 
+# from mcp.client import MCPClient
+import asyncio
+
+
 import time
 import functools
 import logging
@@ -100,21 +104,21 @@ try:
     # --- Force creation of DB + collection by inserting a dummy if empty ---
     if collection.count_documents({}) == 0:
         collection.insert_one({"_init": True})
-        print(f"📂 Created DB '{db_name}' and collection '{collection_name}'")
+        print(f"Created DB '{db_name}' and collection '{collection_name}'")
 
     # --- LangGraph Saver ---
     memory = MongoDBSaver(
         client=client, db_name="career_bot", collection_name="checkpoints"
     )
 
-    print("✅ Using MongoDB persistence")
+    print("Using MongoDB persistence")
 
 except Exception as e:
     from langgraph.checkpoint.memory import MemorySaver
 
     memory = MemorySaver()
     tb = traceback.format_exc()
-    print(f"⚠ Falling back to in-memory persistence: {e}|trace={tb}")
+    print(f"Falling back to in-memory persistence: {e}|trace={tb}")
 
 
 import google.generativeai as genai
@@ -289,6 +293,13 @@ def linkedin_scraper_node(state: dict) -> dict:
 
     # return interrupt("continue_chat")  # <-- that's all you need
     return Command(goto=["career_plan", "career_qa_router"], update=state)
+
+
+# async def call_mcp_tool(tool_name: str, **kwargs):
+#     async with MCPClient("career-plan-service", transport="stdio") as client:
+#         tool = await client.get_tool(tool_name)
+#         result = await tool.invoke(**kwargs)
+#         return result
 
 
 def career_qa_router(state: AgentState) -> Command:
@@ -723,105 +734,65 @@ Start now.
     return interrupt("continue_chat")
 
 
+# at the top of agents.py, import async MCP client tools
+import asyncio
+from mcp import ClientSession, StdioServerParameters
+from mcp.client.stdio import stdio_client
+import sys, os
+
+# path to your MCP server
+CAREER_PLAN_SERVER = os.path.abspath(
+    "E:\\LinkedIn_AI_Career_Bot - Copy\\linkedin\\career_plan_mcp.py"
+)
+
+
+async def call_career_plan_mcp(profile_data, messages):
+    """Async call to the career-plan MCP tool."""
+    server_params = StdioServerParameters(
+        command=sys.executable,
+        args=[CAREER_PLAN_SERVER],
+    )
+
+    async with stdio_client(server_params) as (read, write):
+        async with ClientSession(read, write) as session:
+            await session.initialize()
+            result = await session.call_tool(
+                "generate_career_plan",
+                arguments={
+                    "profile_data": profile_data,
+                    "messages": [
+                        {
+                            "role": (
+                                "user" if isinstance(m, HumanMessage) else "assistant"
+                            ),
+                            "content": m.content,
+                        }
+                        for m in messages
+                    ],
+                },
+            )
+            return result.content[0].text  # MCP returns list of content
+
+
 def career_plan_node(state: AgentState) -> dict:
     profile = state.get("profile_data", {})
     messages = state["messages"]
-    print(state["profile_data"])
 
-    # Find the latest user message
-    latest_user_msg = None
-    for msg in reversed(messages):
-        if isinstance(msg, HumanMessage):
-            latest_user_msg = msg.content.strip()
-            break
-
-    if not latest_user_msg:
+    if not messages:
         messages.append(
-            AIMessage("⚠ Please provide a brief or question for your career plan.")
+            AIMessage(" Please provide a brief or question for your career plan.")
         )
         state["messages"] = messages
         return interrupt("continue_chat")
 
-    # Prepare profile text
-    profile_text = (
-        "\n".join(f"{k}: {v}" for k, v in profile.items())
-        if profile
-        else "(no profile)"
-    )
-
-    # Step 1: Ask the LLM if external web info is needed
-    web_check_prompt = f"""
-User Input: {latest_user_msg}
-
-Profile Data:
-{profile_text}
-
-TASK:
-Decide whether fetching external web info (like courses, communities, websites, industry resources) is required.  
-Return JSON: {{ "use_web": true/false, "confidence": 0-100, "reason": "..." }}  
-Consider the prompt’s intent, not just keywords. Base decision on whether external sources would improve the answer.
-"""
-
+    # Run MCP call synchronously inside event loop
     try:
-        web_decision = (
-            llm_call_with_retry_circuit(web_check_prompt).text.strip().lower()
-        )
+        plan_output = asyncio.run(call_career_plan_mcp(profile, messages))
     except Exception as e:
-        web_decision = "no"
-        messages.append(
-            AIMessage(f"⚠ Could not determine if web search is needed: {e}")
-        )
-
-    # Step 2: If yes, call the MCP nodes to fetch and enrich web search results
-    search_summaries = ""
-    if web_decision == "yes":
-        messages.append(
-            AIMessage("🔍 Fetching relevant web information for your career plan...")
-        )
-        try:
-            state = websearch_mcp_node(state)
-            state = enrich_websearch_node(state)
-            state = store_websearch_node(state)
-
-            # Prepare search summary to feed back into the career plan
-            search_results = state.get("websearch_summary", [])
-            if search_results:
-                search_summaries = "\n".join(
-                    f"- {r['title']}: {r['link']}" for r in search_results
-                )
-        except Exception as e:
-            messages.append(AIMessage(f"❌ Error fetching web results: {e}"))
-
-    # Step 3: Generate the career plan, integrating web results if any
-    prompt = f"""
-You are an AI career coach.
-
-User Input: {latest_user_msg}
-
-Profile Data:
-{profile_text}
-
-{"Additional Web Info:\n" + search_summaries if search_summaries else ""}
-
-TASK:
-- Generate a clear, actionable career plan or revise an existing one based on user input.
-- Integrate relevant insights from web results if available.
-- Provide practical steps, resources, and guidance.
-
-IMPORTANT: Do NOT rely on keyword matching. Understand the user's intent from the message.
-Respond concisely and practically.
-""".strip()
-
-    try:
-        result = llm_call_with_retry_circuit(prompt)
-
-        plan_output = result.text
-    except Exception as e:
-        plan_output = f"❌ Error generating career plan: {e}"
+        plan_output = f" Error generating career plan: {e}"
 
     messages.append(AIMessage(plan_output))
     state["messages"] = messages
-
     return interrupt("continue_chat")
 
 
