@@ -15,6 +15,7 @@ interface Message {
   content: string
   role: "user" | "assistant"
   timestamp: Date
+  isStreaming?: boolean
 }
 
 interface MarketInsight {
@@ -164,8 +165,8 @@ export default function StartChatPage() {
     setIsTyping(true)
   
     // Placeholder for streaming AI response
-    const aiId = `${Date.now()}-ai`  // ← Keep this
-
+    const aiId = `${Date.now()}-ai`
+    
   
     try {
       const response = await fetch(
@@ -194,7 +195,7 @@ export default function StartChatPage() {
             
             if (data.type === 'start') {
               setIsTyping(false)
-              // Create AI message NOW
+              // Create AI message when streaming starts
               setMessages((prev) => [...prev, {
                 id: aiId,
                 content: "",
@@ -207,7 +208,9 @@ export default function StartChatPage() {
                 prev.map((m) => m.id === aiId ? { ...m, content: data.content } : m)
               )
             } else if (data.done) {
-              // Streaming complete
+              setMessages((prev) =>
+                prev.map((m) => m.id === aiId ? { ...m, isStreaming: false } : m)
+              )
               break
             }
           }
@@ -552,15 +555,13 @@ export default function StartChatPage() {
                             </div>
                           )}
                         </div>
-                        {message.content && (
-  <div
-    className={`text-xs mt-1 ${
-      message.role === "user" ? "text-white/70" : "text-muted-foreground"
-    }`}
-  >
-    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-  </div>
-)}
+                        <div
+                          className={`text-xs mt-1 ${
+                            message.role === "user" ? "text-white/70" : "text-muted-foreground"
+                          }`}
+                        >
+                          {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </div>
                       </div>
                     </div>
                   </div>
