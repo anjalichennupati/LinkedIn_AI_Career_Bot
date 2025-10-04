@@ -1,0 +1,243 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Updated to match LearnTube's sophisticated blue palette */
+  --background: radial-gradient(50% 50%, rgb(38, 73, 106) 0%, rgb(24, 44, 63) 100%); /* LearnTube's radial gradient background */
+  --foreground: #ffffff; /* White for primary text */
+  --card: #2d4f71; /* Medium blue for card backgrounds (matches LearnTube) */
+  --card-foreground: #ffffff; /* White text on cards */
+  --popover: #2d4f71; /* Medium blue for popover backgrounds */
+  --popover-foreground: #ffffff; /* White for popover text */
+  --primary: #00c1ff; /* Bright cyan for primary actions (LearnTube accent) */
+  --primary-foreground: #ffffff; /* White for text on primary buttons */
+  --secondary: #2d4f71; /* Medium blue for secondary actions */
+  --secondary-foreground: #9abfe5; /* Light blue-gray for secondary text */
+  --muted: #26496a; /* Darker blue for muted elements */
+  --muted-foreground: #9abfe5; /* Light blue-gray for muted text */
+  --accent: #00c1ff; /* Bright cyan for accents */
+  --accent-foreground: #ffffff; /* White for text on accent elements */
+  --destructive: #ff4c4c; /* Red for destructive actions */
+  --destructive-foreground: #ffffff; /* White for text on destructive buttons */
+  --border: #2d4f71; /* Medium blue for borders */
+  --input: #2d4f71; /* Medium blue for input fields */
+  --ring: rgba(0, 193, 255, 0.3); /* Cyan focus ring */
+  --chart-1: #00c1ff; /* Bright cyan for chart data */
+  --chart-2: #2d4f71; /* Medium blue for chart data */
+  --chart-3: #9abfe5; /* Light blue-gray for chart data */
+  --chart-4: #26496a; /* Darker blue for chart data */
+  --chart-5: #182c3f; /* Darkest blue for chart data */
+  --radius: 0.5rem; /* Rounded corners for buttons and cards */
+  --sidebar: #2d4f71; /* Medium blue for sidebar background */
+  --sidebar-foreground: #ffffff; /* White for sidebar text */
+  --sidebar-primary: #00c1ff; /* Bright cyan for sidebar primary elements */
+  --sidebar-primary-foreground: #ffffff; /* White for text on sidebar primary elements */
+  --sidebar-accent: #9abfe5; /* Light blue-gray for sidebar accents */
+  --sidebar-accent-foreground: #2d4f71; /* Medium blue for text on sidebar accents */
+  --sidebar-border: #26496a; /* Darker blue for sidebar borders */
+  --sidebar-ring: rgba(0, 193, 255, 0.3); /* Cyan focus ring for sidebar */
+}
+
+.dark {
+  /* Dark mode maintains the same LearnTube-inspired palette */
+  --background: radial-gradient(50% 50%, rgb(24, 44, 63) 0%, rgb(15, 25, 35) 100%); /* Darker version of LearnTube gradient */
+  --foreground: #ffffff; /* White for text */
+  --card: #1a2e42; /* Darker blue for cards */
+  --card-foreground: #9abfe5; /* Light blue-gray for card text */
+  --popover: #1a2e42; /* Darker blue for popovers */
+  --popover-foreground: #9abfe5; /* Light blue-gray for popover text */
+  --primary: #00c1ff; /* Bright cyan for primary actions */
+  --primary-foreground: #ffffff; /* White for text on primary */
+  --secondary: #2d4f71; /* Medium blue for secondary actions */
+  --secondary-foreground: #9abfe5; /* Light blue-gray for text on secondary */
+  --muted: #182c3f; /* Darkest blue for muted elements */
+  --muted-foreground: #9abfe5; /* Light blue-gray for muted text */
+  --accent: #00c1ff; /* Bright cyan for accents */
+  --accent-foreground: #ffffff; /* White for text on accents */
+  --destructive: #ff4c4c; /* Red for destructive actions */
+  --destructive-foreground: #ffffff; /* White for text on destructive */
+  --border: #2d4f71; /* Medium blue border */
+  --input: #1a2e42; /* Darker blue input background */
+  --ring: rgba(0, 193, 255, 0.4); /* Cyan focus ring */
+  --chart-1: #00c1ff;
+  --chart-2: #2d4f71;
+  --chart-3: #9abfe5;
+  --chart-4: #26496a;
+  --chart-5: #182c3f;
+  --sidebar: #1a2e42;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #00c1ff;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #2d4f71;
+  --sidebar-accent-foreground: #9abfe5;
+  --sidebar-border: #26496a;
+  --sidebar-ring: rgba(0, 193, 255, 0.4);
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Updated gradient utility classes with harmonious colors */
+@layer utilities {
+  .bg-gradient-primary-accent {
+    background: linear-gradient(135deg, #00c1ff 0%, #2d4f71 100%);
+  }
+
+  .hover\:bg-gradient-primary-accent-hover:hover {
+    background: linear-gradient(135deg, #0099cc 0%, #1f3a52 100%);
+  }
+
+  .text-gradient-primary-accent {
+    background: linear-gradient(135deg, #00c1ff 0%, #9abfe5 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Added LearnTube-style radial gradient background utility */
+  .bg-learntube-gradient {
+    background: radial-gradient(50% 50%, rgb(38, 73, 106) 0%, rgb(24, 44, 63) 100%);
+  }
+}
+
+/* Mobile-specific optimizations and ChatGPT-like styling */
+@layer base {
+  /* Prevent zoom on input focus on mobile - CRITICAL for iOS Safari */
+  input, textarea, select {
+    font-size: 16px !important;
+  }
+  
+  /* Ensure mobile inputs never zoom */
+  @media (max-width: 768px) {
+    input, textarea, select {
+      font-size: 16px !important;
+      -webkit-text-size-adjust: 100%;
+    }
+  }
+  
+  /* Prevent horizontal scrolling on mobile */
+  html, body {
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Improve touch targets on mobile */
+  @media (max-width: 768px) {
+    button, a, input, textarea {
+      min-height: 44px;
+    }
+  }
+  
+  /* Prevent text selection on mobile UI elements */
+  .mobile-ui {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+  
+  /* ChatGPT-like text wrapping and overflow handling */
+  .overflow-wrap-anywhere {
+    overflow-wrap: anywhere;
+    word-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
+  }
+  
+  /* Ensure no horizontal scrolling in chat messages */
+  .break-words {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  
+  /* Better text rendering on mobile */
+  @media (max-width: 768px) {
+    * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+  }
+  
+  /* Custom user message color for better visibility */
+  .bg-user-message {
+    background-color: #35628e;
+    /* 2d4f71 - the code for ai message*/
+  }
+  
+  /* Prevent input overlays and autocomplete issues */
+  textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  
+  /* Ensure no input field overlaps */
+  .mobile-ui textarea {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Additional zoom prevention for iOS Safari */
+  @supports (-webkit-touch-callout: none) {
+    input, textarea, select {
+      font-size: 16px !important;
+      transform: scale(1);
+    }
+  }
+  
+  /* Prevent zoom on double tap */
+  * {
+    touch-action: manipulation;
+  }
+}
