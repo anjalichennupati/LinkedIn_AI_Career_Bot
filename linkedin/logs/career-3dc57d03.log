@@ -1,0 +1,134 @@
+2025-10-04 12:13:08,699 - INFO - Thread career-3dc57d03 -> logging to logs/career-3dc57d03.log
+2025-10-04 12:13:08,698 - INFO - Thread career-3dc57d03 -> logging to logs/career-3dc57d03.log
+2025-10-04 12:13:08,710 - INFO - LinkedIn URL stored for thread career-3dc57d03
+2025-10-04 12:13:08,710 - INFO -  Invoking graph for session career-3dc57d03. It will run to the first natural interrupt.
+2025-10-04 12:13:08,856 - INFO - [FLOW] thread=career-3dc57d03 | node=analyze_profile | action=start | Ensuring profile data is loaded into state
+2025-10-04 12:13:08,856 - INFO - [FLOW] thread=career-3dc57d03 | node=analyze_profile | action=state_miss | Profile data not in state. Checking database.
+2025-10-04 12:13:08,858 - INFO - [FLOW] thread=career-3dc57d03 | node=analyze_profile | action=db_miss | No complete profile in DB. Attempting to scrape.
+2025-10-04 12:13:08,860 - INFO - [FLOW] thread=career-3dc57d03 | node=analyze_profile | action=tool_call | Scraping LinkedIn URL: https://www.linkedin.com/in/mahati-reddy/
+2025-10-04 12:13:10,405 - INFO - Starting LinkedIn profile scraping for URL: https://www.linkedin.com/in/mahati-reddy/
+2025-10-04 12:13:21,987 - INFO - LinkedIn profile scraped successfully
+2025-10-04 12:13:21,995 - INFO - [FLOW] thread=career-3dc57d03 | node=analyze_profile | action=scrape_success | Profile data stored successfully for thread career-3dc57d03
+2025-10-04 12:13:21,995 - INFO - [FLOW] thread=career-3dc57d03 | node=analyze_profile | action=scrape_success | Profile scraped. Storing and adding to state.
+2025-10-04 12:13:31,052 - INFO - [FLOW] thread=career-3dc57d03 | node=analyze_profile | action=analysis_complete | Experience descriptions lack detail and quantifiable achievements, absence of a projects section to showcase practical application, absence of publications or research contributions, "About" section is overly generic and lacks specific accomplishments, includes expired certifications, headline does not effectively highlight AI/ML specialization.
+2025-10-04 12:13:31,055 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Agent is idle. Interrupting for user command.
+2025-10-04 12:13:31,848 - INFO -  Fetching profile info from graph state for thread_id: career-3dc57d03
+2025-10-04 12:13:31,853 - INFO -  Profile data found in state for thread_id: career-3dc57d03
+2025-10-04 12:13:56,670 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Agent is idle. Interrupting for user command.
+2025-10-04 12:13:56,670 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Resumed from interrupt, processing user command. {'text': 'enhance my full profile and give me the flaws in it'}
+2025-10-04 12:13:56,670 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | Resumed with new user command.
+2025-10-04 12:13:56,670 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | Adding user message from dict payload.
+2025-10-04 12:13:56,671 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | User command received: enhance my full profile and give me the flaws in it
+2025-10-04 12:13:56,673 - INFO - Conversation message stored for thread career-3dc57d03 in node user_input
+2025-10-04 12:13:59,822 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=PLANNING_SUCCESS | Plan created: ['enhance_profile']
+2025-10-04 12:13:59,856 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=NAVIGATING | Plan in progress. Routing to next task: enhance_profile
+2025-10-04 12:13:59,870 - INFO - [FLOW] thread=career-3dc57d03 | node=enhance_profile | action=start | Starting goal-aware profile enhancement
+2025-10-04 12:14:19,375 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=HOUSEKEEPING | Task 'enhance_profile' just finished. Cleaning up. Through get task_in_progress.
+2025-10-04 12:14:19,381 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=SYNTHESIZING | Plan complete. Routing to synthesis.
+2025-10-04 12:14:19,386 - INFO - type = <class 'dict'>
+2025-10-04 12:14:25,351 - INFO - Conversation message stored for thread career-3dc57d03 in node synthesis
+2025-10-04 12:14:25,351 - INFO - Streaming from node 'synthesize_response': Here is a comprehensive enhancement of your profil...
+2025-10-04 12:15:28,901 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Agent is idle. Interrupting for user command.
+2025-10-04 12:15:28,912 - INFO -  Streaming completed
+2025-10-04 12:16:18,862 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Agent is idle. Interrupting for user command.
+2025-10-04 12:16:18,862 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Resumed from interrupt, processing user command. {'text': 'hi'}
+2025-10-04 12:16:18,863 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | Resumed with new user command.
+2025-10-04 12:16:18,863 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | Adding user message from dict payload.
+2025-10-04 12:16:18,863 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | User command received: hi
+2025-10-04 12:16:18,877 - INFO - Conversation message stored for thread career-3dc57d03 in node user_input
+2025-10-04 12:16:23,392 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=PLANNING_SUCCESS | Plan created: ['general_qa']
+2025-10-04 12:16:23,398 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=NAVIGATING | Plan in progress. Routing to next task: general_qa
+2025-10-04 12:16:23,400 - INFO - [FLOW] thread=career-3dc57d03 | node=general_qa | action=start | Starting forceful, goal-aware general Q&A
+2025-10-04 12:16:25,209 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=HOUSEKEEPING | Task 'general_qa' just finished. Cleaning up. Through get task_in_progress.
+2025-10-04 12:16:25,212 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=SYNTHESIZING | Plan complete. Routing to synthesis.
+2025-10-04 12:16:25,218 - INFO - type = <class 'dict'>
+2025-10-04 12:16:34,916 - INFO - Conversation message stored for thread career-3dc57d03 in node synthesis
+2025-10-04 12:16:34,918 - INFO - Streaming from node 'synthesize_response': 
+
+Hello! As LearnTube.ai, I'm here to help you nav...
+2025-10-04 12:16:45,654 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Agent is idle. Interrupting for user command.
+2025-10-04 12:16:45,659 - INFO -  Streaming completed
+2025-10-04 12:18:47,874 - INFO - Thread career-3dc57d03 -> logging to logs/career-3dc57d03.log
+2025-10-04 12:18:47,874 - INFO - Thread career-3dc57d03 -> logging to logs/career-3dc57d03.log
+2025-10-04 12:18:47,997 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Agent is idle. Interrupting for user command.
+2025-10-04 12:18:47,997 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Resumed from interrupt, processing user command. {'text': 'hi'}
+2025-10-04 12:18:47,998 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | Resumed with new user command.
+2025-10-04 12:18:47,998 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | Adding user message from dict payload.
+2025-10-04 12:18:47,998 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | User command received: hi
+2025-10-04 12:18:47,999 - INFO - Conversation message stored for thread career-3dc57d03 in node user_input
+2025-10-04 12:18:52,998 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=PLANNING_SUCCESS | Plan created: ['general_qa']
+2025-10-04 12:18:53,004 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=NAVIGATING | Plan in progress. Routing to next task: general_qa
+2025-10-04 12:18:53,011 - INFO - [FLOW] thread=career-3dc57d03 | node=general_qa | action=start | Starting forceful, goal-aware general Q&A
+2025-10-04 12:18:55,271 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=HOUSEKEEPING | Task 'general_qa' just finished. Cleaning up. Through get task_in_progress.
+2025-10-04 12:18:55,273 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=SYNTHESIZING | Plan complete. Routing to synthesis.
+2025-10-04 12:18:55,277 - INFO - type = <class 'dict'>
+2025-10-04 12:18:58,770 - INFO - Conversation message stored for thread career-3dc57d03 in node synthesis
+2025-10-04 12:18:58,772 - INFO - Streaming from node 'synthesize_response': Hello! As LearnTube.ai, I'm here to support your c...
+2025-10-04 12:19:20,129 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Agent is idle. Interrupting for user command.
+2025-10-04 12:19:20,133 - INFO -  Streaming completed
+2025-10-04 12:21:39,734 - INFO - Thread career-3dc57d03 -> logging to logs/career-3dc57d03.log
+2025-10-04 12:21:39,734 - INFO - Thread career-3dc57d03 -> logging to logs/career-3dc57d03.log
+2025-10-04 12:21:39,848 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Agent is idle. Interrupting for user command.
+2025-10-04 12:21:39,848 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Resumed from interrupt, processing user command. {'text': 'hey'}
+2025-10-04 12:21:39,848 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | Resumed with new user command.
+2025-10-04 12:21:39,848 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | Adding user message from dict payload.
+2025-10-04 12:21:39,849 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | User command received: hey
+2025-10-04 12:21:39,850 - INFO - Conversation message stored for thread career-3dc57d03 in node user_input
+2025-10-04 12:21:43,254 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=PLANNING_SUCCESS | Plan created: ['general_qa']
+2025-10-04 12:21:43,263 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=NAVIGATING | Plan in progress. Routing to next task: general_qa
+2025-10-04 12:21:43,266 - INFO - [FLOW] thread=career-3dc57d03 | node=general_qa | action=start | Starting forceful, goal-aware general Q&A
+2025-10-04 12:21:45,348 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=HOUSEKEEPING | Task 'general_qa' just finished. Cleaning up. Through get task_in_progress.
+2025-10-04 12:21:45,352 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=SYNTHESIZING | Plan complete. Routing to synthesis.
+2025-10-04 12:21:45,356 - INFO - type = <class 'dict'>
+2025-10-04 12:21:57,231 - INFO - Conversation message stored for thread career-3dc57d03 in node synthesis
+2025-10-04 12:21:57,231 - INFO - Streaming from node 'synthesize_response'
+2025-10-04 12:22:10,439 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Agent is idle. Interrupting for user command.
+2025-10-04 12:22:10,443 - INFO - Streaming completed
+2025-10-04 12:35:49,889 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Agent is idle. Interrupting for user command.
+2025-10-04 12:35:49,890 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Resumed from interrupt, processing user command. {'text': 'bye'}
+2025-10-04 12:35:49,890 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | Resumed with new user command.
+2025-10-04 12:35:49,890 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | Adding user message from dict payload.
+2025-10-04 12:35:49,890 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | User command received: bye
+2025-10-04 12:35:49,892 - INFO - Conversation message stored for thread career-3dc57d03 in node user_input
+2025-10-04 12:35:53,930 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=PLANNING_SUCCESS | Plan created: ['general_qa']
+2025-10-04 12:35:53,934 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=NAVIGATING | Plan in progress. Routing to next task: general_qa
+2025-10-04 12:35:53,947 - INFO - [FLOW] thread=career-3dc57d03 | node=general_qa | action=start | Starting forceful, goal-aware general Q&A
+2025-10-04 12:35:56,262 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=HOUSEKEEPING | Task 'general_qa' just finished. Cleaning up. Through get task_in_progress.
+2025-10-04 12:35:56,265 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=SYNTHESIZING | Plan complete. Routing to synthesis.
+2025-10-04 12:35:56,271 - INFO - type = <class 'dict'>
+2025-10-04 12:35:59,827 - INFO - Conversation message stored for thread career-3dc57d03 in node synthesis
+2025-10-04 12:35:59,828 - INFO - Streaming from node 'synthesize_response'
+2025-10-04 12:36:15,331 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Agent is idle. Interrupting for user command.
+2025-10-04 12:36:15,334 - INFO - Streaming completed
+2025-10-04 12:39:39,261 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Agent is idle. Interrupting for user command.
+2025-10-04 12:39:39,261 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Resumed from interrupt, processing user command. {'text': 'hi'}
+2025-10-04 12:39:39,261 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | Resumed with new user command.
+2025-10-04 12:39:39,261 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | Adding user message from dict payload.
+2025-10-04 12:39:39,263 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | User command received: hi
+2025-10-04 12:39:39,263 - INFO - Conversation message stored for thread career-3dc57d03 in node user_input
+2025-10-04 12:39:44,220 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=PLANNING_SUCCESS | Plan created: ['general_qa']
+2025-10-04 12:39:44,227 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=NAVIGATING | Plan in progress. Routing to next task: general_qa
+2025-10-04 12:39:44,235 - INFO - [FLOW] thread=career-3dc57d03 | node=general_qa | action=start | Starting forceful, goal-aware general Q&A
+2025-10-04 12:39:46,156 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=HOUSEKEEPING | Task 'general_qa' just finished. Cleaning up. Through get task_in_progress.
+2025-10-04 12:39:46,161 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=SYNTHESIZING | Plan complete. Routing to synthesis.
+2025-10-04 12:39:46,175 - INFO - type = <class 'dict'>
+2025-10-04 12:39:52,852 - INFO - Conversation message stored for thread career-3dc57d03 in node synthesis
+2025-10-04 12:39:52,853 - INFO - Streaming from node 'synthesize_response'
+2025-10-04 12:40:14,310 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Agent is idle. Interrupting for user command.
+2025-10-04 12:40:14,322 - INFO - Streaming completed
+2025-10-04 12:42:01,912 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Agent is idle. Interrupting for user command.
+2025-10-04 12:42:01,912 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Resumed from interrupt, processing user command. {'text': 'hi'}
+2025-10-04 12:42:01,912 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | Resumed with new user command.
+2025-10-04 12:42:01,912 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | Adding user message from dict payload.
+2025-10-04 12:42:01,912 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=RESUMING | User command received: hi
+2025-10-04 12:42:01,913 - INFO - Conversation message stored for thread career-3dc57d03 in node user_input
+2025-10-04 12:42:08,285 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=PLANNING_SUCCESS | Plan created: ['general_qa']
+2025-10-04 12:42:08,296 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=NAVIGATING | Plan in progress. Routing to next task: general_qa
+2025-10-04 12:42:08,303 - INFO - [FLOW] thread=career-3dc57d03 | node=general_qa | action=start | Starting forceful, goal-aware general Q&A
+2025-10-04 12:42:09,848 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=HOUSEKEEPING | Task 'general_qa' just finished. Cleaning up. Through get task_in_progress.
+2025-10-04 12:42:09,851 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=SYNTHESIZING | Plan complete. Routing to synthesis.
+2025-10-04 12:42:09,857 - INFO - type = <class 'dict'>
+2025-10-04 12:42:14,141 - INFO - Conversation message stored for thread career-3dc57d03 in node synthesis
+2025-10-04 12:42:14,142 - INFO - Streaming from node 'synthesize_response'
+2025-10-04 12:42:35,547 - INFO - [FLOW] thread=career-3dc57d03 | node=career_router | action=WAITING | Agent is idle. Interrupting for user command.
+2025-10-04 12:42:35,553 - INFO - Streaming completed
